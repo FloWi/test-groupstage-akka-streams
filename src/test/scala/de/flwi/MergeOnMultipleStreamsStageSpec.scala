@@ -59,7 +59,7 @@ trait TestEnvironment {
   }
 }
 
-class GraphStageSpec extends FlatSpec with Matchers {
+class MergeOnMultipleStreamsStageSpec extends FlatSpec with Matchers {
   "GraphStage" should "merge the graphs correctly into matching tuples" in new TestEnvironment {
 
     implicit val system = ActorSystem("Sys")
@@ -85,7 +85,7 @@ class GraphStageSpec extends FlatSpec with Matchers {
       import FlowGraph.Implicits._
 
       //create a group-stage with the right amount of input-inlets
-      val group = builder.add(new GroupStage[ProductCode, LocalizedProduct](sources.size, l => l.articleCode))
+      val group = builder.add(new MergeOnMultipleStreamsStage[ProductCode, LocalizedProduct](sources.size, l => l.articleCode))
 
       //connect each source to one inlet
       sources.foreach(_ ~> group)
